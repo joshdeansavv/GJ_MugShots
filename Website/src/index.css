@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color-scheme: dark;
+  }
+  
+  body {
+    @apply antialiased;
+    /* Ensure background fills iOS safe areas and eliminate white bars */
+    background-color: #0a0a0a;
+    color: #fafafa;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Additional mobile-friendly base resets */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+  }
+  body {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+  :root {
+    --safe-area-top: env(safe-area-inset-top);
+    --safe-area-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 min-h-[48px] text-base sm:text-sm font-medium text-white shadow-lg transition-all hover:from-indigo-500 hover:to-purple-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 min-h-[48px] text-base sm:text-sm font-medium text-zinc-200 transition-all hover:bg-zinc-750 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900 active:scale-95;
+  }
+  
+  .input-field {
+    @apply rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-base sm:text-sm text-zinc-100 placeholder-zinc-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .card {
+    @apply rounded-2xl border border-zinc-800 bg-zinc-900/60 shadow-lg backdrop-blur-sm;
+  }
+  
+  .card-hover {
+    @apply transition-all hover:border-zinc-700 hover:bg-zinc-900 hover:shadow-xl active:scale-[0.98];
+  }
+
+  /* App-wide responsive container */
+  .container-app {
+    @apply mx-auto w-full max-w-[90rem] px-3 sm:px-4 lg:px-6;
+  }
+
+  /* Mobile-optimized navigation */
+  .mobile-nav-button {
+    @apply w-full flex items-center justify-between px-4 py-3 bg-zinc-800 hover:bg-zinc-750 text-zinc-200 rounded-xl transition-colors touch-manipulation;
+  }
+
+  .mobile-nav-item {
+    @apply w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors touch-manipulation;
+  }
+
+  /* Mobile-friendly touch targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Mobile header optimizations */
+  .mobile-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4;
+  }
+
+  /* Mobile record count badge */
+  .record-count-badge {
+    @apply text-xs sm:text-sm text-zinc-500 bg-zinc-800/50 px-2 py-1 rounded-lg whitespace-nowrap;
+  }
+
+  /* Minimal header styles */
+  .header-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Touch-friendly navigation items */
+  .nav-item {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+
+  /* Mobile-optimized animations */
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  /* Improved mobile typography */
+  .text-responsive {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+
+  .text-responsive-sm {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  /* Mobile-optimized spacing */
+  .space-mobile {
+    @apply space-y-4 sm:space-y-6 lg:space-y-8;
+  }
+
+  /* Better mobile grid layouts */
+  .grid-mobile {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+  }
+
+  /* Mobile-friendly form layouts */
+  .form-mobile {
+    @apply space-y-4 sm:space-y-5;
+  }
+
+  /* Improved mobile button groups */
+  .btn-group-mobile {
+    @apply flex flex-col sm:flex-row gap-3 sm:gap-4;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .safe-pt { padding-top: calc(var(--safe-area-top, 0px) + 0.5rem); }
+  .safe-pb { padding-bottom: calc(var(--safe-area-bottom, 0px) + 0.5rem); }
+}

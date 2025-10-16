@@ -1,0 +1,40 @@
+[Unit]
+Description=GJ MugShots Daily Core Processing Service
+Documentation=https://github.com/joshdeansavv/gjmugshots.com.git
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=oneshot
+User=joshua
+Group=joshua
+WorkingDirectory=/home/joshua/GJ_MugShots/Core_Script
+ExecStart=/usr/bin/python3 /home/joshua/GJ_MugShots/Core_Script/gj_mugshots_core.py
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec=1800
+TimeoutStopSec=120
+
+# Environment variables for database connection
+Environment=DB_HOST=localhost
+Environment=DB_PORT=3306
+Environment=DB_NAME=bookings
+Environment=DB_USER=root
+Environment=DB_PASSWORD=Techandtime@25!!
+
+# Performance and resource settings
+MemoryLimit=1G
+CPUQuota=80%
+Nice=-5
+IOSchedulingClass=1
+IOSchedulingPriority=4
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/joshua/GJ_MugShots/Core_Script
+
+[Install]
+WantedBy=multi-user.target

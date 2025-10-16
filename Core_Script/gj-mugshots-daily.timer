@@ -1,0 +1,13 @@
+[Unit]
+Description=GJ MugShots Daily Core Processing Timer
+Documentation=https://github.com/joshdeansavv/gjmugshots.com.git
+Requires=gj-mugshots-daily.service
+
+[Timer]
+# Run daily at 10:05 AM (PDFs are added around 10 AM)
+OnCalendar=*-*-* 10:05:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

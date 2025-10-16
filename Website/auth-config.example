@@ -1,0 +1,16 @@
+# GJ Mugshots Basic Authentication Configuration
+# Copy this file to .env and update with your secure credentials
+
+# Basic Authentication
+AUTH_USER=admin
+AUTH_PASS=your_secure_password_here
+
+# Server Configuration
+PORT=6023
+HOST=0.0.0.0
+
+# Instructions:
+# 1. Copy this file to .env
+# 2. Change AUTH_USER to your desired username
+# 3. Change AUTH_PASS to a strong password
+# 4. Restart the server

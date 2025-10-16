@@ -1,0 +1,32 @@
+[Unit]
+Description=GJ Mugshots Website Service
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=joshua
+Group=joshua
+WorkingDirectory=/home/joshua/GJ_MugShots/Website
+ExecStart=/bin/bash /home/joshua/GJ_MugShots/Website/start-servers.sh
+ExecStop=/bin/bash -c "pkill -f 'api-server.js' && pkill -f 'server.js'"
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gj-mugshots
+
+# Environment variables
+Environment=NODE_ENV=production
+Environment=PORT=6023
+Environment=API_PORT=3001
+Environment=HOST=0.0.0.0
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/joshua/GJ_MugShots/Website
+
+[Install]
+WantedBy=multi-user.target
