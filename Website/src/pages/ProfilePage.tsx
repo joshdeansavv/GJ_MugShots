@@ -1,9 +1,7 @@
 // React import not needed with React 17+ JSX transform
-import { useState } from 'react';
 import { Arrestee } from '../types';
 import { formatDate, formatTime, ageFromDOB, fullName, createGoogleMapsLink, isAddressLinkable, getBookingDateTime } from '../utils';
 import { MugshotImage } from '../components/MugshotImage';
-import { PdfViewer } from '../components/PdfViewer';
 
 interface ProfilePageProps {
   arrestee: Arrestee;
@@ -13,7 +11,6 @@ interface ProfilePageProps {
 }
 
 export function ProfilePage({ arrestee, allArrestees, onBack, backText }: ProfilePageProps) {
-  const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
 
   // Aggregate all arrests for this person across all their records
   // IMPORTANT: Must filter by date_of_birth to avoid mixing different people with the same name
@@ -43,23 +40,23 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
       </button>
 
 
-      {/* Arrestee Information - Clean profile card */}
-      <section className="bg-zinc-800 rounded-lg border border-zinc-700 p-4 sm:p-6 mb-8">
-        <div className="flex gap-4 sm:gap-6">
-          {/* Mugshot - Left side */}
-          <div className="flex-shrink-0">
+      {/* Arrestee Information - Enhanced profile card */}
+      <section className="bg-zinc-800/90 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-5 sm:p-6 mb-8 shadow-lg shadow-black/10">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+          {/* Mugshot - Top on mobile, left on desktop */}
+          <div className="flex-shrink-0 mx-auto sm:mx-0">
             <MugshotImage 
               src={allPersonArrests[0]?.originalMugshotPath || null} 
               alt={`${fullName(arrestee)} mugshot`}
               size="search"
-              className="rounded-lg"
+              className="rounded-lg ring-2 ring-zinc-700/50 shadow-lg"
             />
           </div>
           
-          {/* Content - Right side */}
+          {/* Content - Below on mobile, right on desktop */}
           <div className="flex-1 min-w-0">
             {/* Name */}
-            <h2 className="text-xl font-semibold text-white mb-4">
+            <h2 className="text-xl font-semibold text-white mb-4 text-center sm:text-left">
               {fullName(arrestee).toUpperCase()}
             </h2>
             
@@ -67,24 +64,24 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
             <div className="space-y-3">
               {/* Age */}
               {typeof age === 'number' && (
-                <div className="flex items-center">
-                  <span className="text-sm font-medium text-zinc-400 w-20">Age:</span>
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <span className="text-sm font-medium text-zinc-400 sm:w-20">Age:</span>
                   <span className="text-sm text-zinc-200">{age}</span>
                 </div>
               )}
               
               {/* Gender */}
               {arrestee.gender && (
-                <div className="flex items-center">
-                  <span className="text-sm font-medium text-zinc-400 w-20">Gender:</span>
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <span className="text-sm font-medium text-zinc-400 sm:w-20">Gender:</span>
                   <span className="text-sm text-zinc-200">{arrestee.gender}</span>
                 </div>
               )}
               
               {/* Date of Birth */}
               {arrestee.date_of_birth && (
-                <div className="flex items-center">
-                  <span className="text-sm font-medium text-zinc-400 w-20">DOB:</span>
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <span className="text-sm font-medium text-zinc-400 sm:w-20">DOB:</span>
                   <span className="text-sm text-zinc-200">{formatDate(arrestee.date_of_birth)}</span>
                 </div>
               )}
@@ -96,43 +93,45 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
 
       {/* Arrest History */}
       <section>
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-white">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+          <h3 className="text-xl sm:text-2xl font-bold text-white">
             Arrest History
           </h3>
-          <span className="bg-zinc-700 text-zinc-200 px-3 py-1 rounded-md text-sm font-medium">
+          <span className="inline-flex items-center bg-indigo-600/20 text-indigo-400 px-4 py-2 rounded-lg text-sm font-bold border border-indigo-600/30 shadow-lg shadow-indigo-600/10">
             {allPersonArrests.length} Total Arrest{allPersonArrests.length !== 1 ? 's' : ''}
           </span>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {allPersonArrests.map((arrest, index) => (
-            <div key={arrest.id} className="bg-zinc-800 rounded-lg border border-zinc-700 p-4 sm:p-6">
-              <div className="flex gap-4 sm:gap-6">
-                {/* Mugshot - Left side */}
-                <div className="flex-shrink-0">
+            <div key={arrest.id} className="bg-zinc-800/90 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-5 sm:p-6 shadow-lg shadow-black/10 hover:border-zinc-600 hover:shadow-xl hover:shadow-black/20 transition-all duration-200">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                {/* Mugshot - Top on mobile, left on desktop */}
+                <div className="flex-shrink-0 mx-auto sm:mx-0">
                   <MugshotImage 
                     src={arrest.originalMugshotPath || null} 
                     alt={`${fullName(arrestee)} mugshot ${arrest.bookingDate}`}
                     size="large"
-                    className="rounded-lg"
+                    className="rounded-lg ring-2 ring-zinc-700/50 shadow-lg"
                   />
                 </div>
                 
-                {/* Content - Right side */}
+                {/* Content - Below on mobile, right on desktop */}
                 <div className="flex-1 min-w-0">
                   {/* Date and Arrest Number */}
                   <div className="mb-4">
-                    <h4 className="text-lg font-semibold text-white mb-1">
+                    <h4 className="text-lg font-semibold text-white mb-1 text-center sm:text-left">
                       {formatDate(arrest.bookingDate)}
                       {arrest.bookingTime && (
                         <span className="text-base font-normal text-zinc-300 ml-2">at {formatTime(arrest.bookingTime)}</span>
                       )}
                     </h4>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-zinc-400">Arrest #{allPersonArrests.length - index}</span>
+                    <div className="flex items-center gap-3 justify-center sm:justify-start flex-wrap">
+                      <span className="inline-flex items-center bg-zinc-700/70 text-zinc-300 px-3 py-1 rounded-lg text-xs font-semibold">
+                        Arrest #{allPersonArrests.length - index}
+                      </span>
                       {index === 0 && (
-                        <span className="bg-zinc-700 text-zinc-200 px-2 py-1 rounded text-xs font-medium">
+                        <span className="inline-flex items-center bg-indigo-600/20 text-indigo-400 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-600/30">
                           Most Recent
                         </span>
                       )}
@@ -143,8 +142,8 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
                   <div className="space-y-3">
                     {/* Address at time of this arrest */}
                     {arrest.address && (
-                      <div className="flex items-start">
-                        <span className="text-sm font-medium text-zinc-400 w-24 flex-shrink-0">Address:</span>
+                      <div className="flex flex-col sm:flex-row sm:items-start">
+                        <span className="text-sm font-medium text-zinc-400 sm:w-24 flex-shrink-0">Address:</span>
                         <div className="text-sm text-zinc-200">
                           {isAddressLinkable(arrest.address) ? (
                             <a
@@ -164,25 +163,27 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
                     
                     {/* Arresting Officer */}
                     {arrest.arrestingOfficer && (
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium text-zinc-400 w-24">Officer:</span>
-                        <span className="text-sm text-zinc-200">{arrest.arrestingOfficer}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <span className="text-sm font-medium text-zinc-400 sm:w-24">Officer:</span>
+                        <span className="text-sm text-zinc-200 break-words">{arrest.arrestingOfficer}</span>
                       </div>
                     )}
                     
-                    {/* Source PDF Button */}
+                    {/* Source PDF Link */}
                     {arrest.sourcePdf && (
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium text-zinc-400 w-24">Source:</span>
-                        <button
-                          onClick={() => setSelectedPdf(arrest.sourcePdf!)}
-                          className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <span className="text-sm font-medium text-zinc-400 sm:w-24">Source:</span>
+                        <a
+                          href={`/api/pdf/${encodeURIComponent(arrest.sourcePdf)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors active:scale-95"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                           View Source PDF
-                        </button>
+                        </a>
                       </div>
                     )}
                     
@@ -195,7 +196,20 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
                         {arrest.charges.map((charge, chargeIndex) => (
                           <li key={chargeIndex} className="flex items-start gap-3">
                             <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-zinc-500" />
-                            <span className="text-sm text-zinc-200 leading-relaxed">{charge}</span>
+                            <div className="flex-1">
+                              <span className="text-sm text-zinc-200 leading-relaxed">{charge}</span>
+                              <a
+                                href={`https://www.google.com/search?q=${encodeURIComponent(charge + ' Colorado statute')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ml-2 inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                More Info
+                              </a>
+                            </div>
                           </li>
                         ))}
                       </ul>
@@ -207,14 +221,6 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
           ))}
         </div>
       </section>
-
-      {/* PDF Viewer Modal */}
-      {selectedPdf && (
-        <PdfViewer 
-          pdfFilename={selectedPdf} 
-          onClose={() => setSelectedPdf(null)} 
-        />
-      )}
     </div>
   );
 }
