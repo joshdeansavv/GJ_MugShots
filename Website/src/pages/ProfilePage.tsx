@@ -199,7 +199,7 @@ export function ProfilePage({ arrestee, allArrestees, onBack, backText }: Profil
                             <div className="flex-1">
                               <span className="text-sm text-zinc-200 leading-relaxed">{charge}</span>
                               <a
-                                href={`https://www.google.com/search?q=${encodeURIComponent(charge + ' Colorado statute')}`}
+                                href={`https://law.justia.com/search?q=${encodeURIComponent(charge + ' Colorado')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="ml-2 inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-300 transition-colors underline decoration-zinc-500"
